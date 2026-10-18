@@ -1,0 +1,606 @@
+{
+  "repository": "https://github.com/Refining-colors/pet-with-you",
+  "original": "https://github.com/PC2005-cloud/dsh-pet",
+  "files": [
+    {
+      "id": "a000",
+      "label": "待机呼吸休闲",
+      "file": "assets/pet-with-you/a000.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%BE%85%E6%9C%BA%E5%91%BC%E5%90%B8%E4%BC%91%E9%97%B2.webm"
+    },
+    {
+      "id": "a001",
+      "label": "东张西望",
+      "file": "assets/pet-with-you/a001.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E4%B8%9C%E5%BC%A0%E8%A5%BF%E6%9C%9B.webm"
+    },
+    {
+      "id": "a002",
+      "label": "悠闲哼歌",
+      "file": "assets/pet-with-you/a002.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E6%82%A0%E9%97%B2%E5%93%BC%E6%AD%8C.webm"
+    },
+    {
+      "id": "a003",
+      "label": "超大伸懒腰",
+      "file": "assets/pet-with-you/a003.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E8%B6%85%E5%A4%A7%E4%BC%B8%E6%87%92%E8%85%B0.webm"
+    },
+    {
+      "id": "a004",
+      "label": "原地敲击桌面互动",
+      "file": "assets/pet-with-you/a004.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%8E%9F%E5%9C%B0%E6%95%B2%E5%87%BB%E6%A1%8C%E9%9D%A2%E4%BA%92%E5%8A%A8.webm"
+    },
+    {
+      "id": "a005",
+      "label": "原地重力下蹲压缩",
+      "file": "assets/pet-with-you/a005.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%8E%9F%E5%9C%B0%E9%87%8D%E5%8A%9B%E4%B8%8B%E8%B9%B2%E5%8E%8B%E7%BC%A9.webm"
+    },
+    {
+      "id": "a006",
+      "label": "哈欠连天",
+      "file": "assets/pet-with-you/a006.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%93%88%E6%AC%A0%E8%BF%9E%E5%A4%A9.webm"
+    },
+    {
+      "id": "a007",
+      "label": "原地小憩沉眠",
+      "file": "assets/pet-with-you/a007.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%8E%9F%E5%9C%B0%E5%B0%8F%E6%86%A9%E6%B2%89%E7%9C%A0.webm"
+    },
+    {
+      "id": "a008",
+      "label": "女仆屈膝礼仪",
+      "file": "assets/pet-with-you/a008.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%A5%B3%E4%BB%86%E5%B1%88%E8%86%9D%E7%A4%BC%E4%BB%AA.webm"
+    },
+    {
+      "id": "a009",
+      "label": "被吓一跳",
+      "file": "assets/pet-with-you/a009.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E8%A2%AB%E5%90%93%E4%B8%80%E8%B7%B3.webm"
+    },
+    {
+      "id": "a010",
+      "label": "小幅度原地360度旋转展示",
+      "file": "assets/pet-with-you/a010.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%B0%8F%E5%B9%85%E5%BA%A6%E5%8E%9F%E5%9C%B0360%E5%BA%A6%E6%97%8B%E8%BD%AC%E5%B1%95%E7%A4%BA.webm"
+    },
+    {
+      "id": "a011",
+      "label": "偷吃零食被抓住",
+      "file": "assets/pet-with-you/a011.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%81%B7%E5%90%83%E9%9B%B6%E9%A3%9F%E8%A2%AB%E6%8A%93%E4%BD%8F.webm"
+    },
+    {
+      "id": "a012",
+      "label": "用鲸鱼尾巴拍打地面",
+      "file": "assets/pet-with-you/a012.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E7%94%A8%E9%B2%B8%E9%B1%BC%E5%B0%BE%E5%B7%B4%E6%8B%8D%E6%89%93%E5%9C%B0%E9%9D%A2.webm"
+    },
+    {
+      "id": "a013",
+      "label": "打瞌睡被惊醒",
+      "file": "assets/pet-with-you/a013.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E6%89%93%E7%9E%8C%E7%9D%A1%E8%A2%AB%E6%83%8A%E9%86%92.webm"
+    },
+    {
+      "id": "a014",
+      "label": "照镜子",
+      "file": "assets/pet-with-you/a014.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E7%85%A7%E9%95%9C%E5%AD%90.webm"
+    },
+    {
+      "id": "a015",
+      "label": "整体换装试色",
+      "file": "assets/pet-with-you/a015.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E6%95%B4%E4%BD%93%E6%8D%A2%E8%A3%85%E8%AF%95%E8%89%B2.webm"
+    },
+    {
+      "id": "a016",
+      "label": "轻快记录",
+      "file": "assets/pet-with-you/a016.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E8%BD%BB%E5%BF%AB%E8%AE%B0%E5%BD%95.webm"
+    },
+    {
+      "id": "a017",
+      "label": "写代码",
+      "file": "assets/pet-with-you/a017.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%86%99%E4%BB%A3%E7%A0%81.webm"
+    },
+    {
+      "id": "a018",
+      "label": "摇扇纳凉",
+      "file": "assets/pet-with-you/a018.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E6%91%87%E6%89%87%E7%BA%B3%E5%87%89.webm"
+    },
+    {
+      "id": "a019",
+      "label": "晨间刷牙",
+      "file": "assets/pet-with-you/a019.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E6%99%A8%E9%97%B4%E5%88%B7%E7%89%99.webm"
+    },
+    {
+      "id": "a020",
+      "label": "原地专心玩魔方",
+      "file": "assets/pet-with-you/a020.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%8E%9F%E5%9C%B0%E4%B8%93%E5%BF%83%E7%8E%A9%E9%AD%94%E6%96%B9.webm"
+    },
+    {
+      "id": "a021",
+      "label": "原地蹲下玩玩具汽车",
+      "file": "assets/pet-with-you/a021.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%8E%9F%E5%9C%B0%E8%B9%B2%E4%B8%8B%E7%8E%A9%E7%8E%A9%E5%85%B7%E6%B1%BD%E8%BD%A6.webm"
+    },
+    {
+      "id": "a022",
+      "label": "鲸鱼吐泡泡特效",
+      "file": "assets/pet-with-you/a022.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E9%B2%B8%E9%B1%BC%E5%90%90%E6%B3%A1%E6%B3%A1%E7%89%B9%E6%95%88.webm"
+    },
+    {
+      "id": "a023",
+      "label": "原地跳跃抓碎头顶物品",
+      "file": "assets/pet-with-you/a023.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%8E%9F%E5%9C%B0%E8%B7%B3%E8%B7%83%E6%8A%93%E7%A2%8E%E5%A4%B4%E9%A1%B6%E7%89%A9%E5%93%81.webm"
+    },
+    {
+      "id": "a024",
+      "label": "玩游戏气急败坏",
+      "file": "assets/pet-with-you/a024.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E7%8E%A9%E6%B8%B8%E6%88%8F%E6%B0%94%E6%80%A5%E8%B4%A5%E5%9D%8F.webm"
+    },
+    {
+      "id": "a025",
+      "label": "玩水枪",
+      "file": "assets/pet-with-you/a025.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E7%8E%A9%E6%B0%B4%E6%9E%AA.webm"
+    },
+    {
+      "id": "a026",
+      "label": "小提琴演奏",
+      "file": "assets/pet-with-you/a026.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%B0%8F%E6%8F%90%E7%90%B4%E6%BC%94%E5%A5%8F.webm"
+    },
+    {
+      "id": "a027",
+      "label": "蓝鲸现世",
+      "file": "assets/pet-with-you/a027.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E8%93%9D%E9%B2%B8%E7%8E%B0%E4%B8%96.webm"
+    },
+    {
+      "id": "a028",
+      "label": "优雅女仆舞",
+      "file": "assets/pet-with-you/a028.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E4%BC%98%E9%9B%85%E5%A5%B3%E4%BB%86%E8%88%9E.webm"
+    },
+    {
+      "id": "a029",
+      "label": "轻快摇摆舞",
+      "file": "assets/pet-with-you/a029.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E8%BD%BB%E5%BF%AB%E6%91%87%E6%91%86%E8%88%9E.webm"
+    },
+    {
+      "id": "a030",
+      "label": "可爱宅舞",
+      "file": "assets/pet-with-you/a030.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%8F%AF%E7%88%B1%E5%AE%85%E8%88%9E.webm"
+    },
+    {
+      "id": "a031",
+      "label": "吹气球",
+      "file": "assets/pet-with-you/a031.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%B9%E6%B0%94%E7%90%83.webm"
+    },
+    {
+      "id": "a032",
+      "label": "动物环绕",
+      "file": "assets/pet-with-you/a032.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%8A%A8%E7%89%A9%E7%8E%AF%E7%BB%95.webm"
+    },
+    {
+      "id": "a033",
+      "label": "放风筝",
+      "file": "assets/pet-with-you/a033.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E6%94%BE%E9%A3%8E%E7%AD%9D.webm"
+    },
+    {
+      "id": "a034",
+      "label": "拆礼物",
+      "file": "assets/pet-with-you/a034.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E6%8B%86%E7%A4%BC%E7%89%A9.webm"
+    },
+    {
+      "id": "a035",
+      "label": "变鸽子",
+      "file": "assets/pet-with-you/a035.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%8F%98%E9%B8%BD%E5%AD%90.webm"
+    },
+    {
+      "id": "a036",
+      "label": "扑克魔术",
+      "file": "assets/pet-with-you/a036.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E6%89%91%E5%85%8B%E9%AD%94%E6%9C%AF.webm"
+    },
+    {
+      "id": "a037",
+      "label": "抽陀螺",
+      "file": "assets/pet-with-you/a037.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E6%8A%BD%E9%99%80%E8%9E%BA.webm"
+    },
+    {
+      "id": "a038",
+      "label": "吹笛子",
+      "file": "assets/pet-with-you/a038.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%B9%E7%AC%9B%E5%AD%90.webm"
+    },
+    {
+      "id": "a039",
+      "label": "蝴蝶蜜蜂环绕头顶开花",
+      "file": "assets/pet-with-you/a039.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E8%9D%B4%E8%9D%B6%E8%9C%9C%E8%9C%82%E7%8E%AF%E7%BB%95%E5%A4%B4%E9%A1%B6%E5%BC%80%E8%8A%B1.webm"
+    },
+    {
+      "id": "a040",
+      "label": "撸猫",
+      "file": "assets/pet-with-you/a040.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E6%92%B8%E7%8C%AB.webm"
+    },
+    {
+      "id": "a041",
+      "label": "凭空生花",
+      "file": "assets/pet-with-you/a041.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%87%AD%E7%A9%BA%E7%94%9F%E8%8A%B1.webm"
+    },
+    {
+      "id": "a042",
+      "label": "骑木马",
+      "file": "assets/pet-with-you/a042.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E9%AA%91%E6%9C%A8%E9%A9%AC.webm"
+    },
+    {
+      "id": "a043",
+      "label": "三球抛接",
+      "file": "assets/pet-with-you/a043.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E4%B8%89%E7%90%83%E6%8A%9B%E6%8E%A5.webm"
+    },
+    {
+      "id": "a044",
+      "label": "踢毽子",
+      "file": "assets/pet-with-you/a044.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E8%B8%A2%E6%AF%BD%E5%AD%90.webm"
+    },
+    {
+      "id": "a045",
+      "label": "下五子棋",
+      "file": "assets/pet-with-you/a045.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E4%B8%8B%E4%BA%94%E5%AD%90%E6%A3%8B.webm"
+    },
+    {
+      "id": "a046",
+      "label": "荡秋千",
+      "file": "assets/pet-with-you/a046.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E8%8D%A1%E7%A7%8B%E5%8D%83.webm"
+    },
+    {
+      "id": "a047",
+      "label": "吃白饭",
+      "file": "assets/pet-with-you/a047.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%83%E7%99%BD%E9%A5%AD.webm"
+    },
+    {
+      "id": "a048",
+      "label": "大口吃零食",
+      "file": "assets/pet-with-you/a048.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%A4%A7%E5%8F%A3%E5%90%83%E9%9B%B6%E9%A3%9F.webm"
+    },
+    {
+      "id": "a049",
+      "label": "吃Token",
+      "file": "assets/pet-with-you/a049.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%83Token.webm"
+    },
+    {
+      "id": "a050",
+      "label": "吃早餐",
+      "file": "assets/pet-with-you/a050.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%83%E6%97%A9%E9%A4%90.webm"
+    },
+    {
+      "id": "a051",
+      "label": "吃午餐",
+      "file": "assets/pet-with-you/a051.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%83%E5%8D%88%E9%A4%90.webm"
+    },
+    {
+      "id": "a052",
+      "label": "吃晚餐",
+      "file": "assets/pet-with-you/a052.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%83%E6%99%9A%E9%A4%90.webm"
+    },
+    {
+      "id": "a053",
+      "label": "吃冰淇淋融化",
+      "file": "assets/pet-with-you/a053.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%83%E5%86%B0%E6%B7%87%E6%B7%8B%E8%9E%8D%E5%8C%96.webm"
+    },
+    {
+      "id": "a054",
+      "label": "吃大闸蟹",
+      "file": "assets/pet-with-you/a054.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%83%E5%A4%A7%E9%97%B8%E8%9F%B9.webm"
+    },
+    {
+      "id": "a055",
+      "label": "吃糖葫芦",
+      "file": "assets/pet-with-you/a055.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%83%E7%B3%96%E8%91%AB%E8%8A%A6.webm"
+    },
+    {
+      "id": "a056",
+      "label": "吃长寿面",
+      "file": "assets/pet-with-you/a056.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%83%E9%95%BF%E5%AF%BF%E9%9D%A2.webm"
+    },
+    {
+      "id": "a057",
+      "label": "吃西瓜",
+      "file": "assets/pet-with-you/a057.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%83%E8%A5%BF%E7%93%9C.webm"
+    },
+    {
+      "id": "a058",
+      "label": "涮火锅",
+      "file": "assets/pet-with-you/a058.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E6%B6%AE%E7%81%AB%E9%94%85.webm"
+    },
+    {
+      "id": "a059",
+      "label": "被落叶淹没",
+      "file": "assets/pet-with-you/a059.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E8%A2%AB%E8%90%BD%E5%8F%B6%E6%B7%B9%E6%B2%A1.webm"
+    },
+    {
+      "id": "a060",
+      "label": "中秋赏月吃月饼",
+      "file": "assets/pet-with-you/a060.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E4%B8%AD%E7%A7%8B%E8%B5%8F%E6%9C%88%E5%90%83%E6%9C%88%E9%A5%BC.webm"
+    },
+    {
+      "id": "a061",
+      "label": "堆雪人",
+      "file": "assets/pet-with-you/a061.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%A0%86%E9%9B%AA%E4%BA%BA.webm"
+    },
+    {
+      "id": "a062",
+      "label": "放烟花",
+      "file": "assets/pet-with-you/a062.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E6%94%BE%E7%83%9F%E8%8A%B1.webm"
+    },
+    {
+      "id": "a063",
+      "label": "吃粽子",
+      "file": "assets/pet-with-you/a063.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%83%E7%B2%BD%E5%AD%90.webm"
+    },
+    {
+      "id": "a064",
+      "label": "吃年糕",
+      "file": "assets/pet-with-you/a064.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%83%E5%B9%B4%E7%B3%95.webm"
+    },
+    {
+      "id": "a065",
+      "label": "吃青团",
+      "file": "assets/pet-with-you/a065.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%83%E9%9D%92%E5%9B%A2.webm"
+    },
+    {
+      "id": "a066",
+      "label": "吃腊八粥",
+      "file": "assets/pet-with-you/a066.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%83%E8%85%8A%E5%85%AB%E7%B2%A5.webm"
+    },
+    {
+      "id": "a067",
+      "label": "吃重阳糕",
+      "file": "assets/pet-with-you/a067.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%83%E9%87%8D%E9%98%B3%E7%B3%95.webm"
+    },
+    {
+      "id": "a068",
+      "label": "收红包",
+      "file": "assets/pet-with-you/a068.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E6%94%B6%E7%BA%A2%E5%8C%85.webm"
+    },
+    {
+      "id": "a069",
+      "label": "写福字",
+      "file": "assets/pet-with-you/a069.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%86%99%E7%A6%8F%E5%AD%97.webm"
+    },
+    {
+      "id": "a070",
+      "label": "穿针乞巧",
+      "file": "assets/pet-with-you/a070.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E7%A9%BF%E9%92%88%E4%B9%9E%E5%B7%A7.webm"
+    },
+    {
+      "id": "a071",
+      "label": "舞狮头",
+      "file": "assets/pet-with-you/a071.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E8%88%9E%E7%8B%AE%E5%A4%B4.webm"
+    },
+    {
+      "id": "a072",
+      "label": "讨糖南瓜灯",
+      "file": "assets/pet-with-you/a072.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E8%AE%A8%E7%B3%96%E5%8D%97%E7%93%9C%E7%81%AF.webm"
+    },
+    {
+      "id": "a073",
+      "label": "插茱萸赏菊",
+      "file": "assets/pet-with-you/a073.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E6%8F%92%E8%8C%B1%E8%90%B8%E8%B5%8F%E8%8F%8A.webm"
+    },
+    {
+      "id": "a074",
+      "label": "放河灯",
+      "file": "assets/pet-with-you/a074.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E6%94%BE%E6%B2%B3%E7%81%AF.webm"
+    },
+    {
+      "id": "a075",
+      "label": "萌化小幽灵",
+      "file": "assets/pet-with-you/a075.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E8%90%8C%E5%8C%96%E5%B0%8F%E5%B9%BD%E7%81%B5.webm"
+    },
+    {
+      "id": "a076",
+      "label": "装点圣诞树",
+      "file": "assets/pet-with-you/a076.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E8%A3%85%E7%82%B9%E5%9C%A3%E8%AF%9E%E6%A0%91.webm"
+    },
+    {
+      "id": "a077",
+      "label": "放孔明灯",
+      "file": "assets/pet-with-you/a077.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E6%94%BE%E5%AD%94%E6%98%8E%E7%81%AF.webm"
+    },
+    {
+      "id": "a078",
+      "label": "吃汤圆",
+      "file": "assets/pet-with-you/a078.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%83%E6%B1%A4%E5%9C%86.webm"
+    },
+    {
+      "id": "a079",
+      "label": "吃饺子",
+      "file": "assets/pet-with-you/a079.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%90%83%E9%A5%BA%E5%AD%90.webm"
+    },
+    {
+      "id": "a080",
+      "label": "是啊，吃什么",
+      "file": "assets/pet-with-you/a080.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E6%98%AF%E5%95%8A%EF%BC%8C%E5%90%83%E4%BB%80%E4%B9%88.webm"
+    },
+    {
+      "id": "a081",
+      "label": "深度思考碎碎念",
+      "file": "assets/pet-with-you/a081.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E6%B7%B1%E5%BA%A6%E6%80%9D%E8%80%83%E7%A2%8E%E7%A2%8E%E5%BF%B5.webm"
+    },
+    {
+      "id": "a082",
+      "label": "点击回应-开心跃动",
+      "file": "assets/pet-with-you/a082.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E7%82%B9%E5%87%BB%E5%9B%9E%E5%BA%94-%E5%BC%80%E5%BF%83%E8%B7%83%E5%8A%A8.webm"
+    },
+    {
+      "id": "a083",
+      "label": "点击回应-害羞惊讶",
+      "file": "assets/pet-with-you/a083.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E7%82%B9%E5%87%BB%E5%9B%9E%E5%BA%94-%E5%AE%B3%E7%BE%9E%E6%83%8A%E8%AE%B6.webm"
+    },
+    {
+      "id": "a084",
+      "label": "点击回应-傲娇生气",
+      "file": "assets/pet-with-you/a084.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E7%82%B9%E5%87%BB%E5%9B%9E%E5%BA%94-%E5%82%B2%E5%A8%87%E7%94%9F%E6%B0%94.webm"
+    },
+    {
+      "id": "a085",
+      "label": "点击回应-挠痒咯咯笑",
+      "file": "assets/pet-with-you/a085.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E7%82%B9%E5%87%BB%E5%9B%9E%E5%BA%94-%E6%8C%A0%E7%97%92%E5%92%AF%E5%92%AF%E7%AC%91.webm"
+    },
+    {
+      "id": "a086",
+      "label": "点击回应-元气挥手",
+      "file": "assets/pet-with-you/a086.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E7%82%B9%E5%87%BB%E5%9B%9E%E5%BA%94-%E5%85%83%E6%B0%94%E6%8C%A5%E6%89%8B.webm"
+    },
+    {
+      "id": "a087",
+      "label": "被鼠标拖拽悬空反馈",
+      "file": "assets/pet-with-you/a087.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E8%A2%AB%E9%BC%A0%E6%A0%87%E6%8B%96%E6%8B%BD%E6%82%AC%E7%A9%BA%E5%8F%8D%E9%A6%88.webm"
+    },
+    {
+      "id": "a088",
+      "label": "螃蟹走路",
+      "file": "assets/pet-with-you/a088.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E8%9E%83%E8%9F%B9%E8%B5%B0%E8%B7%AF.webm"
+    },
+    {
+      "id": "a089",
+      "label": "原地漂浮踏步",
+      "file": "assets/pet-with-you/a089.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%8E%9F%E5%9C%B0%E6%BC%82%E6%B5%AE%E8%B8%8F%E6%AD%A5.webm"
+    },
+    {
+      "id": "a090",
+      "label": "原地左转奔跑",
+      "file": "assets/pet-with-you/a090.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%8E%9F%E5%9C%B0%E5%B7%A6%E8%BD%AC%E5%A5%94%E8%B7%91.webm"
+    },
+    {
+      "id": "a097",
+      "label": "碎碎念-擦桌碎碎念",
+      "file": "assets/pet-with-you/a097.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E7%A2%8E%E7%A2%8E%E5%BF%B5-%E6%93%A6%E6%A1%8C%E7%A2%8E%E7%A2%8E%E5%BF%B5.webm"
+    },
+    {
+      "id": "a098",
+      "label": "碎碎念-发呆碎碎念",
+      "file": "assets/pet-with-you/a098.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E7%A2%8E%E7%A2%8E%E5%BF%B5-%E5%8F%91%E5%91%86%E7%A2%8E%E7%A2%8E%E5%BF%B5.webm"
+    },
+    {
+      "id": "a099",
+      "label": "碎碎念-对屏碎碎念",
+      "file": "assets/pet-with-you/a099.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E7%A2%8E%E7%A2%8E%E5%BF%B5-%E5%AF%B9%E5%B1%8F%E7%A2%8E%E7%A2%8E%E5%BF%B5.webm"
+    },
+    {
+      "id": "a100",
+      "label": "工作状态-思考冒泡",
+      "file": "assets/pet-with-you/a100.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%B7%A5%E4%BD%9C%E7%8A%B6%E6%80%81-%E6%80%9D%E8%80%83%E5%86%92%E6%B3%A1.webm"
+    },
+    {
+      "id": "a101",
+      "label": "工作状态-忙碌点按",
+      "file": "assets/pet-with-you/a101.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%B7%A5%E4%BD%9C%E7%8A%B6%E6%80%81-%E5%BF%99%E7%A2%8C%E7%82%B9%E6%8C%89.webm"
+    },
+    {
+      "id": "a102",
+      "label": "工作状态-清点归档",
+      "file": "assets/pet-with-you/a102.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%B7%A5%E4%BD%9C%E7%8A%B6%E6%80%81-%E6%B8%85%E7%82%B9%E5%BD%92%E6%A1%A3.webm"
+    },
+    {
+      "id": "a103",
+      "label": "工作状态-原地踱步张望",
+      "file": "assets/pet-with-you/a103.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%B7%A5%E4%BD%9C%E7%8A%B6%E6%80%81-%E5%8E%9F%E5%9C%B0%E8%B8%B1%E6%AD%A5%E5%BC%A0%E6%9C%9B.webm"
+    },
+    {
+      "id": "a104",
+      "label": "工作状态-雀跃庆祝",
+      "file": "assets/pet-with-you/a104.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%B7%A5%E4%BD%9C%E7%8A%B6%E6%80%81-%E9%9B%80%E8%B7%83%E5%BA%86%E7%A5%9D.webm"
+    },
+    {
+      "id": "a105",
+      "label": "工作状态-垂头叹气冒汗",
+      "file": "assets/pet-with-you/a105.webm",
+      "source": "https://raw.githubusercontent.com/Refining-colors/pet-with-you/main/assets/webm/%E5%B7%A5%E4%BD%9C%E7%8A%B6%E6%80%81-%E5%9E%82%E5%A4%B4%E5%8F%B9%E6%B0%94%E5%86%92%E6%B1%97.webm"
+    }
+  ]
+}

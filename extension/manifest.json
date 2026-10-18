@@ -1,0 +1,52 @@
+{
+  "manifest_version": 3,
+  "name": "deepseek-quotalk",
+  "version": "0.16.1",
+  "description": "划词就地追问，通过已登录的 DeepSeek 网页标签页获取回答。",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "打开追问窗口"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chat.deepseek.com/*"
+      ],
+      "js": [
+        "stream-decoder.js",
+        "stream-watch.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "https://chat.deepseek.com/*"
+      ],
+      "js": [
+        "core.js",
+        "ui.js",
+        "pet-catalog.js",
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/pet-with-you/poster.svg",
+        "assets/pet-with-you/*.webm"
+      ],
+      "matches": [
+        "https://chat.deepseek.com/*"
+      ]
+    }
+  ]
+}

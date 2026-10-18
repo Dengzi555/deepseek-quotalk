@@ -1,0 +1,28 @@
+# Local research, original user files and retired assets
+
+# Generated distributions
+/dist/
+*.zip
+
+# Local tools and editor state
+.codex/
+.agents/
+.vscode/
+.idea/
+node_modules/
+__pycache__/
+*.py[cod]
+.DS_Store
+Thumbs.db
+
+# Private data and temporary captures
+.env
+.env.*
+!.env.example
+*.log
+*.tmp
+*.bak
+*.har
+*.pem
+*.key
+codex-clipboard-*
