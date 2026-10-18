@@ -96,7 +96,8 @@ def main():
     docs = {p.relative_to(ROOT).as_posix() for p in (ROOT / 'docs').glob('*.md')}
     if not docs:
         raise ValueError('Missing user documentation')
-    install = runtime | docs | set(ROOT_FILES)
+    install_images = {'操作步骤图/' + str(i) + '.png' for i in range(1, 7)}
+    install = runtime | docs | set(ROOT_FILES) | install_images
     source = install | {'scripts/release.py'}
     for directory, pattern in [('tests', '*.test.cjs'), ('preview', '*'), ('.github/ISSUE_TEMPLATE', '*.md')]:
         source.update(p.relative_to(ROOT).as_posix() for p in (ROOT / directory).glob(pattern) if p.is_file())

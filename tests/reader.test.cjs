@@ -38,17 +38,42 @@ function readerHarness({production=false,preferences={}}={}){
   function all(el=document.documentElement.children[0].shadow){return [el,...el.children.flatMap(all)];}
   const aliases={'旁注':'pet','＋ 旁注追问':'select','追问 ↗':'primary','收起':'window-control','切换主题':'theme-control'};
   const button=label=>all().find(e=>e.tag==='button'&&(aliases[label]?e.className===aliases[label]:e.textContent===label));
-  return {sleepers,async fireTimer(ms){const i=sleepers.findIndex(t=>!t.cancelled&&t.ms===ms);if(i<0)throw Error('No matching timer');const [t]=sleepers.splice(i,1);t.fn();await flush();},async setHidden(value){document.hidden=value;for(const fn of document.listeners.visibilitychange||[])fn();await flush();},calls,jobs,button,all,scopes,get host(){return document.documentElement.children[0];},ready:flush,async show(){for(const fn of inbox)fn({type:'show'});await flush();},async movePointer(x,y){for(const fn of document.listeners.pointermove||[])fn({clientX:x,clientY:y});await flush();},async push(job){for(const fn of inbox)fn({type:'job-update',job});await flush();},async key(options={}){const event={key:'Enter',preventDefault(){this.prevented=true;},...options};const input=all().find(e=>e.tag==='textarea');for(const fn of input.listeners.keydown||[])fn(event);await flush();return event;},async select(value){text=value;for(const fn of document.listeners.pointerup||[])fn({composedPath:()=>[],target:paragraph});await button('＋ 旁注追问').click();},async tick(){const fns=sleepers.splice(0);for(const t of fns)if(!t.cancelled)t.fn();await flush();}};
+  return {get mainScrollTop(){return document.scrollingElement.scrollTop;},sleepers,async fireTimer(ms){const i=sleepers.findIndex(t=>!t.cancelled&&t.ms===ms);if(i<0)throw Error('No matching timer');const [t]=sleepers.splice(i,1);t.fn();await flush();},async setHidden(value){document.hidden=value;for(const fn of document.listeners.visibilitychange||[])fn();await flush();},calls,jobs,button,all,scopes,get host(){return document.documentElement.children[0];},ready:flush,async show(){for(const fn of inbox)fn({type:'show'});await flush();},async movePointer(x,y){for(const fn of document.listeners.pointermove||[])fn({clientX:x,clientY:y});await flush();},async push(job){for(const fn of inbox)fn({type:'job-update',job});await flush();},async key(options={}){const event={key:'Enter',preventDefault(){this.prevented=true;},...options};const input=all().find(e=>e.tag==='textarea');for(const fn of input.listeners.keydown||[])fn(event);await flush();return event;},async select(value){text=value;for(const fn of document.listeners.pointerup||[])fn({composedPath:()=>[],target:paragraph});await button('＋ 旁注追问').click();},async tick(){const fns=sleepers.splice(0);for(const t of fns)if(!t.cancelled)t.fn();await flush();}};
 }
 async function flush(){for(let i=0;i<12;i++)await Promise.resolve();}
 
-test('only the current pet remains and obsolete selection preferences are removed',async()=>{
-  const preferences={petSkin:'whale',petSizes:{whale:'small'},petSize:'large'};
-  const h=readerHarness({production:true,preferences});await h.ready();
-  assert.equal(preferences.petSkin,undefined);assert.equal(preferences.petSizes,undefined);
-  assert.equal(h.button('旁注').style.width,'192px');
-  assert.equal(h.all().some(e=>e.className==='skin-option'),false);
-  assert.match(h.all().find(e=>e.tag==='video').src,/pet-with-you\/a000.webm$/);
+test('two characters retain separate sizes and whale defaults to small',async()=>{
+  const preferences={petSize:'large'},h=readerHarness({production:true,preferences});await h.ready();
+  const pet=h.button('旁注');assert.equal(pet.getAttribute('data-skin'),'maid');assert.equal(pet.style.width,'192px');
+  const whale=h.all().find(e=>e.getAttribute('data-skin-id')==='whale');
+  await whale.click();assert.equal(pet.style.width,'96px');assert.match(pet.children[0].src,/deepseek-whale-blue.svg$/);
+  const row=h.all().find(e=>e.getAttribute('data-section')==='action');assert.equal(row.style.display,'none');
+  await h.all().find(e=>e.getAttribute('data-size-id')==='medium').click();assert.equal(preferences.petSizes.whale,'medium');
+  await h.all().find(e=>e.getAttribute('data-skin-id')==='maid').click();assert.equal(pet.style.width,'192px');assert.equal(row.style.display,'');
+  await whale.click();const reopened=readerHarness({production:true,preferences});await reopened.ready();
+  assert.equal(reopened.button('旁注').getAttribute('data-skin'),'whale');assert.equal(reopened.button('旁注').style.width,'144px');
+  assert.equal(h.calls.length,0);
+});
+
+test('whale ignores random and late video events while replies still restore the correct pose',async()=>{
+  const h=readerHarness({production:true});await h.ready();await chooseRandom(h,1);
+  await h.select('追问');await h.button('解释一下').click();
+  await h.all().find(e=>e.getAttribute('data-skin-id')==='whale').click();
+  await mediaEvent(h,'loadeddata');await mediaEvent(h,'playing');await h.fireTimer(60000);
+  const pet=h.button('旁注'),video=h.all().find(e=>e.tag==='video');
+  assert.equal(video.style.display,'none');assert.equal(video.paused,true);assert.equal(pet.children[0].style.display,'block');
+  assert.equal(pet.getAttribute('data-pose'),'thinking');
+  await h.all().find(e=>e.getAttribute('data-skin-id')==='maid').click();assert.match(video.src,/a100.webm$/);
+  await h.push({id:'job1',revision:1,status:'done',text:'完成',updated:10});assert.match(video.src,/a000.webm$/);assert.equal(h.calls.length,1);
+});
+
+test('character preview plays only with its menu open',async()=>{
+  const h=readerHarness(),pet=h.button('旁注');
+  for(const fn of pet.listeners.contextmenu)fn({preventDefault(){},clientX:100,clientY:100});
+  await h.button('选择形象 ›').click();
+  const preview=h.all().find(e=>e.getAttribute('data-skin-id')==='maid').children[0];
+  assert.equal(preview.tag,'video');assert.equal(preview.paused,false);
+  await h.button('形象大小 ›').click();assert.equal(preview.paused,true);
 });
 
 async function chooseRandom(h,value){
@@ -182,10 +207,10 @@ test('pet sizes apply immediately, survive reload, and clamp a previously dragge
   assert.equal(pet.style.width,'144px');assert.equal(pet.style.height,'144px');
   pet.style.left='1100px';pet.style.top='820px';
   await h.all().find(e=>e.getAttribute('data-size-id')==='large').click();
-  assert.equal(pet.style.width,'192px');assert.equal(pet.style.height,'192px');assert.equal(preferences.petSize,'large');
+  assert.equal(pet.style.width,'192px');assert.equal(pet.style.height,'192px');assert.equal(preferences.petSizes.maid,'large');
   assert.equal(pet.style.left,'1004px');assert.equal(pet.style.top,'704px');assert.equal(h.calls.length,0);
   const reopened=readerHarness({production:true,preferences});await reopened.ready();assert.equal(reopened.button('旁注').style.width,'192px');
-  await reopened.all().find(e=>e.getAttribute('data-size-id')==='small').click();assert.equal(reopened.button('旁注').style.width,'96px');assert.equal(preferences.petSize,'small');
+  await reopened.all().find(e=>e.getAttribute('data-size-id')==='small').click();assert.equal(reopened.button('旁注').style.width,'96px');assert.equal(preferences.petSizes.maid,'small');
 });
 
 test('pet thinks while replying, including collapsed and queued replies, and restores immediately on completion',async()=>{
@@ -210,15 +235,16 @@ test('completing one quote does not stop thinking while another quote is pending
   await h.push({id:'job2',revision:1,status:'done',text:'完成二',updated:20});assert.match(h.all().find(e=>e.tag==='video').src,/a000.webm$/);
 });
 
-test('pet menu offers three sections and 100 actions without balance performances',async()=>{
+test('pet menu offers four sections and 100 actions without balance performances',async()=>{
   const h=readerHarness(),rows=h.all().filter(e=>e.className?.includes('pet-menu-row'));
-  assert.deepEqual(rows.map(e=>e.textContent),['形象大小 ›','动作 ›','退出']);
-  const panes=h.all().filter(e=>e.className==='pet-menu-pane');assert.equal(panes.length,2);
+  assert.deepEqual(rows.map(e=>e.textContent),['选择形象 ›','形象大小 ›','动作 ›','退出']);
+  const panes=h.all().filter(e=>e.className==='pet-menu-pane');assert.equal(panes.length,3);
   await rows[0].click();assert.equal(panes[0].style.display,'grid');
   await rows[1].click();assert.equal(panes[0].style.display,'none');assert.equal(panes[1].style.display,'grid');
+  await rows[2].click();assert.equal(panes[1].style.display,'none');assert.equal(panes[2].style.display,'grid');
   assert.equal(h.all().filter(e=>e.getAttribute('data-action-id')).length,100);
   assert.equal(h.all().some(e=>e.textContent.includes('余额')),false);
-  assert.equal(panes[1].children[0].className,'random-action');
+  assert.equal(panes[2].children[0].className,'random-action');
   assert.equal(h.calls.length,0);
 });
 
@@ -281,3 +307,27 @@ test('autoplay rejection shows the poster and clicking the pet retries playback'
   video.play=()=>{video.paused=false;return Promise.resolve();};await pet.click();await mediaEvent(h,'playing');assert.equal(video.paused,false);assert.equal(video.style.display,'block');assert.equal(h.calls.length,0);
 });
 
+
+test('a failed fallback image creates no dot and cannot remove the pet video',async()=>{
+  const h=readerHarness();const pet=h.button('旁注'),image=pet.children[0],video=pet.children[1];
+  for(const fn of image.listeners.error||[])fn();await h.ready();
+  assert.equal(h.all().some(e=>e.className==='pet-fallback'),false);
+  assert.ok(pet.children.includes(video));assert.equal(pet.style.height,'144px');
+  assert.equal(image.style.display,'none');
+  await mediaEvent(h,'loadeddata');assert.equal(video.style.display,'block');assert.equal(video.paused,false);
+});
+
+test('chat jump button appears only above latest messages and never moves the main page',async()=>{
+  const h=readerHarness();await h.select('聊天记录');await h.button('解释一下').click();
+  const body=h.all().find(e=>e.className==='body'),jump=h.all().find(e=>e.className==='chat-jump');
+  assert.ok(jump);assert.equal(jump.style.display,'none');
+  body.scrollHeight=1200;body.clientHeight=400;body.scrollTop=200;
+  for(const fn of body.listeners.scroll||[])fn();
+  assert.equal(jump.style.display,'flex');
+  body.scrollHeight=1400;
+  await h.push({id:'job1',revision:1,status:'streaming',text:'新消息仍在继续',updated:10});
+  assert.equal(body.scrollTop,200,'streaming must not pull the reader down');
+  await jump.click();assert.equal(body.scrollTop,1400);assert.equal(jump.style.display,'none');assert.equal(h.mainScrollTop,0);
+  body.scrollTop=300;for(const fn of body.listeners.scroll||[])fn();assert.equal(jump.style.display,'flex');
+  await h.select('另一段文字');assert.equal(jump.style.display,'none','empty discussion has no return button');
+});

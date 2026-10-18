@@ -14,3 +14,5 @@
 ## 当前素材清单
 
 发行素材以 [素材说明](extension/assets/README.md) 和 [视频来源清单](extension/assets/pet-with-you/sources.json) 为准。通用加载图标由本项目编写；角色使用随包提供的透明视频。发行包保留各素材的来源与许可文件。
+
+DeepSeek 名称与鲸鱼标志归其权利人所有；本项目与官方无隶属关系。

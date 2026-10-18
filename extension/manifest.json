@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "deepseek-quotalk",
-  "version": "0.16.1",
+  "version": "0.17.2",
   "description": "划词就地追问，通过已登录的 DeepSeek 网页标签页获取回答。",
   "permissions": [
     "storage",
@@ -41,6 +41,7 @@
   "web_accessible_resources": [
     {
       "resources": [
+        "assets/deepseek-whale-blue.svg",
         "assets/pet-with-you/poster.svg",
         "assets/pet-with-you/*.webm"
       ],

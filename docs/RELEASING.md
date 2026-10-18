@@ -14,9 +14,9 @@ Topics 可填写：deepseek、browser-extension、chrome-extension、edge-extens
 
 ## 准备上传目录
 
-先使用本项目生成的 deepseek-quotalk-source-0.16.1.zip。解压后，进入直接包含 README.md、extension、docs、tests、scripts 和 .github 的那一层，把这一层作为仓库根目录。不要把源码 ZIP 本身当成仓库代码上传。
+先使用本项目生成的 deepseek-quotalk-source-0.17.2.zip。解压后，进入直接包含 README.md、extension、docs、tests、scripts 和 .github 的那一层，把这一层作为仓库根目录。不要把源码 ZIP 本身当成仓库代码上传。
 
-源码包只包含公开发行所需文件。普通用户安装时应下载 deepseek-quotalk-0.16.1.zip，然后加载其中的 extension 文件夹。
+源码包只包含公开发行所需文件。普通用户安装时应下载 deepseek-quotalk-0.17.2.zip，然后加载其中的 extension 文件夹。
 
 ## 使用 GitHub Desktop 上传
 
@@ -24,7 +24,7 @@ Topics 可填写：deepseek、browser-extension、chrome-extension、edge-extens
 2. 在 GitHub Desktop 中克隆该仓库，打开它对应的本地文件夹。
 3. 把上面解压的源码目录内容复制进本地仓库根目录。包括 .github、.gitignore 和 .gitattributes 等文件；不要复制安装包 ZIP 或个人文件。
 4. 在 Changes 中检查本次提交，确认扩展脚本、100 个 WebM、文档、测试和许可证齐全。
-5. 填写提交说明，例如“Prepare v0.16.1 public release”，提交后推送到 GitHub。
+5. 填写提交说明，例如“Prepare v0.17.2 public release”，提交后推送到 GitHub。
 6. 打开仓库首页，确认 README 和文档链接显示正常。
 
 自有代码和文档采用 MIT；动画有单独的非商用约定。保留 LICENSE、NOTICE.md 和动画目录中的来源、原始许可证与署名。项目与 DeepSeek 官方无隶属关系。
@@ -49,8 +49,8 @@ Topics 可填写：deepseek、browser-extension、chrome-extension、edge-extens
 
 | 文件 | 用途 |
 | --- | --- |
-| deepseek-quotalk-0.16.1.zip | 安装包，包含 extension、教程和许可证 |
-| deepseek-quotalk-source-0.16.1.zip | 源码包，另含测试、发布脚本、演示与 Issue 模板 |
+| deepseek-quotalk-0.17.2.zip | 安装包，包含 extension、教程和许可证 |
+| deepseek-quotalk-source-0.17.2.zip | 源码包，另含测试、发布脚本、演示与 Issue 模板 |
 | SHA256SUMS.txt | 两个 ZIP 的 SHA-256 校验值 |
 | PUBLIC_FILES.txt | 源码包公开文件清单 |
 
@@ -60,7 +60,7 @@ Topics 可填写：deepseek、browser-extension、chrome-extension、edge-extens
 
 1. 按 [开发说明](DEVELOPMENT.md) 检查真实网页功能。
 2. 确认当前源码已经提交并推送。
-3. 在 GitHub 仓库的 Releases 中创建版本，标签填写 v0.16.1，标题填写 deepseek-quotalk v0.16.1。
+3. 在 GitHub 仓库的 Releases 中创建版本，标签填写 v0.17.2，标题填写 deepseek-quotalk v0.17.2。
 4. 将 [RELEASE_NOTES.md](RELEASE_NOTES.md) 的内容作为发布说明，记录实际做过的浏览器验证。
 5. 附上本次安装包、源码包、SHA256SUMS.txt 和 PUBLIC_FILES.txt，核对附件版本后发布。
 

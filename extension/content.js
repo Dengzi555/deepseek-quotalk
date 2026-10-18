@@ -183,24 +183,29 @@
       else{if(!current)openGeneral();else showPanel();input.focus();}
     },'pet');launcher.setAttribute('aria-label','点击提问，拖动调整位置');launcher.setAttribute('aria-expanded','false');
     const catalog=globalThis.MarginPetCatalog,petActions=catalog.groups.flatMap(g=>g.actions);
+    const skins=[{id:'maid',label:'pet-with-you',file:'pet-with-you/poster.svg',animated:true},{id:'whale',label:'DeepSeek 鲸鱼',file:'deepseek-whale-blue.svg',animated:false}];
+    let selectedSkin=skins[0],skinTouched=false,skinSizes={};
     const thinkingRecords=new Set();
     let petHidden=false,menuSection=null,manualAction=null,playingAction=null,failedAction=null;
     const assetURL=file=>demo?'../extension/assets/'+file:chrome.runtime.getURL('assets/'+file);
     const character=node('img');character.alt='';character.draggable=false;
-    character.addEventListener('error',()=>{launcher.replaceChildren(node('span','pet-fallback','◉'));launcher.style.height='36px';});
+    let characterFailed=false;
+    character.addEventListener('error',()=>{characterFailed=true;character.style.display='none';});
+    character.addEventListener('load',()=>{characterFailed=false;if(!petHidden&&video.style.display!=='block')character.style.display='block';});
     const video=node('video','pet-video');video.muted=true;video.defaultMuted=true;video.playsInline=true;video.controls=false;video.preload='metadata';video.style.display='none';video.setAttribute('aria-hidden','true');video.setAttribute('playsinline','');
     launcher.append(character,video);root.append(launcher);
-    const petMenu=node('div','pet-menu'),menuButtons=[],actionButtons=[],actionGroups=[],menuPanes={};petMenu.setAttribute('role','menu');petMenu.setAttribute('aria-label','桌宠菜单');petMenu.style.display='none';root.append(petMenu);
+    const petMenu=node('div','pet-menu'),menuButtons=[],skinButtons=[],skinPreviews=[],actionButtons=[],actionGroups=[],menuPanes={};petMenu.setAttribute('role','menu');petMenu.setAttribute('aria-label','桌宠菜单');petMenu.style.display='none';root.append(petMenu);
+    function syncSkinPreviews(){for(const preview of skinPreviews){if(petMenu.style.display!=='none'&&menuSection==='skin'&&!document.hidden)preview.play().catch(()=>{});else preview.pause();}}
     function menuGroup(id,label){
-      const row=button(label+' ›',()=>{menuSection=menuSection===id?null:id;for(const [key,pane] of Object.entries(menuPanes))pane.style.display=key===menuSection?'grid':'none';for(const b of menuButtons)b.setAttribute('aria-expanded',b.getAttribute('data-section')===menuSection?'true':'false');},'pet-menu-row');
+      const row=button(label+' ›',()=>{menuSection=menuSection===id?null:id;for(const [key,pane] of Object.entries(menuPanes))pane.style.display=key===menuSection?'grid':'none';for(const b of menuButtons)b.setAttribute('aria-expanded',b.getAttribute('data-section')===menuSection?'true':'false');syncSkinPreviews();},'pet-menu-row');
       row.setAttribute('role','menuitem');row.setAttribute('aria-haspopup','true');row.setAttribute('aria-expanded','false');row.setAttribute('data-section',id);menuButtons.push(row);petMenu.append(row);
       const pane=node('div','pet-menu-pane');pane.style.display='none';menuPanes[id]=pane;petMenu.append(pane);return pane;
     }
-    const sizePane=menuGroup('size','形象大小'),actionPane=menuGroup('action','动作');
+    const skinPane=menuGroup('skin','选择形象'),sizePane=menuGroup('size','形象大小'),actionPane=menuGroup('action','动作');
     const exitButton=button('退出',()=>{petHidden=true;closePetMenu();collapsePanel();launcher.style.display='none';pickButton.style.display='none';video.pause();},'pet-menu-row pet-exit');exitButton.setAttribute('role','menuitem');menuButtons.push(exitButton);petMenu.append(exitButton);
     let sizeTouched=false;
     const sizeButtons=[],sizes=[{id:'small',label:'小',pixels:96},{id:'medium',label:'中',pixels:144},{id:'large',label:'大',pixels:192}];
-    function closePetMenu(){petMenu.style.display='none';menuSection=null;for(const pane of Object.values(menuPanes))pane.style.display='none';for(const b of menuButtons)b.setAttribute('aria-expanded','false');}
+    function closePetMenu(){petMenu.style.display='none';menuSection=null;for(const pane of Object.values(menuPanes))pane.style.display='none';for(const b of menuButtons)b.setAttribute('aria-expanded','false');syncSkinPreviews();}
     let randomMinutes=0,randomTimer=null,randomTouched=false;
     const randomRow=node('label','random-action'),randomSelect=node('select');
     randomSelect.setAttribute('aria-label','随机自动播放间隔');
@@ -212,7 +217,7 @@
       if(!randomMinutes)return;
       randomTimer=setTimeout(()=>{
         randomTimer=null;
-        if(!petHidden&&!document.hidden&&!thinkingRecords.size&&!manualAction&&randomPool.length){
+        if(!petHidden&&!document.hidden&&selectedSkin.animated&&!thinkingRecords.size&&!manualAction&&randomPool.length){
           manualAction=randomPool[Math.floor(Math.random()*randomPool.length)].id;playingAction=null;failedAction=null;syncPetPose();
         }
         scheduleRandom();
@@ -227,24 +232,24 @@
       if(!randomTouched&&[0,1,3,5,10].includes(saved.randomActionMinutes)){randomMinutes=saved.randomActionMinutes;randomSelect.value=String(randomMinutes);scheduleRandom();}
     }).catch(()=>{});
     const actionHint=node('div','action-hint');actionHint.setAttribute('aria-live','polite');actionPane.append(actionHint);
-    function showPoster(){video.style.display='none';character.style.display='block';}
+    function showPoster(){video.style.display='none';character.style.display=characterFailed?'none':'block';}
     function playVideo(){
-      if(petHidden||document.hidden)return;
+      if(petHidden||!selectedSkin.animated||document.hidden)return;
       if(!video.paused)return;
       const source=video.src;
       video.play().catch(()=>{if(video.src===source){showPoster();actionHint.textContent='播放被浏览器暂停，点击桌宠重试。';}});
     }
-    video.addEventListener('loadeddata',()=>{if(!petHidden&&failedAction!==playingAction){video.style.display='block';character.style.display='none';playVideo();}});
-    video.addEventListener('playing',()=>{if(!petHidden){video.style.display='block';character.style.display='none';}});
+    video.addEventListener('loadeddata',()=>{if(!petHidden&&selectedSkin.animated&&failedAction!==playingAction){video.style.display='block';character.style.display='none';playVideo();}});
+    video.addEventListener('playing',()=>{if(!petHidden&&selectedSkin.animated){video.style.display='block';character.style.display='none';}});
     video.addEventListener('error',()=>{failedAction=playingAction;video.pause();showPoster();actionHint.textContent='动画加载失败，已显示静态形象。可选择其他动作重试。';});
     video.addEventListener('ended',()=>{if(manualAction){manualAction=null;syncPetPose();}});
-    document.addEventListener('visibilitychange',()=>{if(document.hidden)video.pause();else syncPetPose();});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden)video.pause();else syncPetPose();syncSkinPreviews();});
     function syncPetPose(){
       const thinking=thinkingRecords.size>0;
-      const src=assetURL('pet-with-you/poster.svg');
-      if(character.src!==src)character.src=src;
+      const src=assetURL(selectedSkin.file);
+      if(character.src!==src){characterFailed=false;character.src=src;}
       launcher.setAttribute('data-pose',thinking?'thinking':'regular');
-      if(petHidden){video.pause();showPoster();return;}
+      if(petHidden||!selectedSkin.animated){video.pause();showPoster();return;}
       const id=manualAction||(thinking?catalog.thinking:catalog.idle),action=petActions.find(a=>a.id===id);
       video.loop=!manualAction;launcher.setAttribute('data-animation',id);
       for(const b of actionButtons)b.setAttribute('aria-checked',b.getAttribute('data-action-id')===id?'true':'false');
@@ -255,30 +260,52 @@
       }
       if(failedAction!==id){if(video.readyState>=2){video.style.display='block';character.style.display='none';}playVideo();}
     }
+    function applySkin(id,persist=false){
+      selectedSkin=skins.find(skin=>skin.id===id)||skins[0];manualAction=null;
+      launcher.setAttribute('data-skin',selectedSkin.id);syncPetPose();
+      const row=menuButtons.find(b=>b.getAttribute('data-section')==='action');
+      row.style.display=selectedSkin.animated?'':'none';
+      if(!selectedSkin.animated&&menuSection==='action')closePetMenu();
+      for(const b of skinButtons)b.setAttribute('aria-checked',b.getAttribute('data-skin-id')===selectedSkin.id?'true':'false');
+      applySize(skinSizes[selectedSkin.id]);
+      if(persist){skinTouched=true;if(preferences)preferences.set({petSkin:selectedSkin.id}).catch(()=>{});}
+    }
+    for(const skin of skins){
+      const b=button('',()=>{applySkin(skin.id,true);closePetMenu();},'skin-option');
+      b.setAttribute('role','menuitemradio');b.setAttribute('data-skin-id',skin.id);
+      const thumb=node(skin.animated?'video':'img');
+      if(skin.animated){thumb.muted=true;thumb.defaultMuted=true;thumb.playsInline=true;thumb.loop=true;thumb.preload='auto';thumb.setAttribute('aria-hidden','true');thumb.src=assetURL('pet-with-you/a000.webm');skinPreviews.push(thumb);}
+      else{thumb.src=assetURL(skin.file);thumb.alt='';}
+      b.append(thumb,node('span','',skin.label));skinButtons.push(b);skinPane.append(b);
+    }
     const sizeRow=node('div','pet-sizes');sizeRow.setAttribute('role','group');sizeRow.setAttribute('aria-label','形象大小');sizePane.append(sizeRow);
     function applySize(id,persist=false){
-      const size=sizes.find(s=>s.id===id)||sizes[1];
+      const size=sizes.find(s=>s.id===id)||(selectedSkin.animated?sizes[1]:sizes[0]);
       launcher.style.width=size.pixels+'px';launcher.style.height=size.pixels+'px';launcher.setAttribute('data-size',size.id);
       if(launcher.style.left&&launcher.style.left!=='auto')launcher.style.left=Math.max(4,Math.min(innerWidth-size.pixels-4,parseFloat(launcher.style.left)))+'px';
       if(launcher.style.top&&launcher.style.top!=='auto')launcher.style.top=Math.max(4,Math.min(innerHeight-size.pixels-4,parseFloat(launcher.style.top)))+'px';
       for(const b of sizeButtons)b.setAttribute('aria-checked',b.getAttribute('data-size-id')===size.id?'true':'false');
-      if(persist){sizeTouched=true;if(preferences)preferences.set({petSize:size.id}).catch(()=>{});}
+      if(persist){sizeTouched=true;skinSizes[selectedSkin.id]=size.id;if(preferences)preferences.set({petSizes:{...skinSizes}}).catch(()=>{});}
     }
     for(const size of sizes){const b=button(size.label,()=>applySize(size.id,true),'size-option');b.setAttribute('role','menuitemradio');b.setAttribute('aria-label',size.label+'号形象');b.setAttribute('data-size-id',size.id);sizeButtons.push(b);sizeRow.append(b);}
     const automatic=button('恢复自动状态',()=>{manualAction=null;failedAction=null;playingAction=null;syncPetPose();closePetMenu();},'action-option');automatic.setAttribute('role','menuitem');actionPane.append(automatic);
     for(const [index,group] of catalog.groups.entries()){
       const section=node('details','action-group'),summary=node('summary','',group.label+' · '+group.actions.length);section.open=index===0;section.append(summary);actionPane.append(section);const buttons=[];
-      for(const action of group.actions){const b=button(action.label,()=>{manualAction=action.id;if(playingAction===action.id)playingAction=null;syncPetPose();closePetMenu();},'action-option');b.setAttribute('role','menuitemradio');b.setAttribute('data-action-id',action.id);b.setAttribute('aria-checked','false');section.append(b);actionButtons.push(b);buttons.push(b);}
+      for(const action of group.actions){const b=button(action.label,()=>{if(!selectedSkin.animated)return;manualAction=action.id;if(playingAction===action.id)playingAction=null;syncPetPose();closePetMenu();},'action-option');b.setAttribute('role','menuitemradio');b.setAttribute('data-action-id',action.id);b.setAttribute('aria-checked','false');section.append(b);actionButtons.push(b);buttons.push(b);}
       actionGroups.push({section,buttons});
     }
     const credits=node('div','pet-credits');
     for(const [label,url] of [['动画原作','https://github.com/PC2005-cloud/dsh-pet'],['pet-with-you','https://github.com/Refining-colors/pet-with-you']]){const a=node('a','',label);a.href=url;a.target='_blank';a.rel='noopener noreferrer';credits.append(a);}
     credits.append(node('span','','素材仅限非商用'));actionPane.append(credits);
-    syncPetPose();applySize();
-    if(preferences){
-      preferences.get('petSize').then(saved=>{if(!sizeTouched)applySize(saved.petSize);}).catch(()=>{});
-      preferences.remove?.(['petSkin','petSizes']).catch(()=>{});
-    }
+    applySkin('maid');
+    if(preferences)preferences.get(['petSkin','petSizes','petSize']).then(saved=>{
+      const restored={};
+      for(const skin of skins)if(sizes.some(size=>size.id===saved.petSizes?.[skin.id]))restored[skin.id]=saved.petSizes[skin.id];
+      if(!saved.petSizes&&sizes.some(size=>size.id===saved.petSize))restored.maid=saved.petSize;
+      skinSizes={...restored,...skinSizes};
+      if(!skinTouched)applySkin(saved.petSkin);
+      else if(!sizeTouched)applySize(skinSizes[selectedSkin.id]);
+    }).catch(()=>{});
     launcher.addEventListener('contextmenu',e=>{
       e.preventDefault();petMoved=false;
       const r=launcher.getBoundingClientRect(),x=e.clientX||r.left,y=e.clientY||r.top;
@@ -287,7 +314,7 @@
     document.addEventListener('pointerdown',e=>{const path=e.composedPath();if(!path.includes(petMenu)&&!path.includes(launcher))closePetMenu();},true);
     petMenu.addEventListener('keydown',e=>{
       if(e.key==='Escape'){e.preventDefault();closePetMenu();launcher.focus();}
-      else if(e.key==='ArrowDown'||e.key==='ArrowUp'){if(e.target===randomSelect)return;e.preventDefault();const extras=menuSection==='size'?sizeButtons:menuSection==='action'?[randomSelect,automatic,...actionGroups.filter(g=>g.section.open).flatMap(g=>g.buttons)]:[],buttons=[...menuButtons.filter(b=>b.style.display!=='none'),...extras],at=buttons.indexOf(root.activeElement),next=(at+(e.key==='ArrowDown'?1:-1)+buttons.length)%buttons.length;buttons[next].focus();}
+      else if(e.key==='ArrowDown'||e.key==='ArrowUp'){if(e.target===randomSelect)return;e.preventDefault();const extras=menuSection==='skin'?skinButtons:menuSection==='size'?sizeButtons:menuSection==='action'?[randomSelect,automatic,...actionGroups.filter(g=>g.section.open).flatMap(g=>g.buttons)]:[],buttons=[...menuButtons.filter(b=>b.style.display!=='none'),...extras],at=buttons.indexOf(root.activeElement),next=(at+(e.key==='ArrowDown'?1:-1)+buttons.length)%buttons.length;buttons[next].focus();}
     });
     launcher.addEventListener('pointerdown',e=>{
       if(e.button!==undefined&&e.button!==0)return;
@@ -305,14 +332,22 @@
     launcher.addEventListener('pointerup',()=>{petDrag=null;});
     launcher.addEventListener('pointercancel',()=>{petDrag=null;petMoved=false;});
     launcher.addEventListener('lostpointercapture',()=>{petDrag=null;});
-    function showPanel(){petHidden=false;launcher.style.display='';panel.style.display='flex';syncPetPose();launcher.setAttribute('aria-expanded','true');if(!demo&&!prepared){prepared=true;rpc('prepare').catch(()=>{prepared=false;});}}
+    function showPanel(){petHidden=false;launcher.style.display='';panel.style.display='flex';syncPetPose();launcher.setAttribute('aria-expanded','true');updateJumpLatest();if(!demo&&!prepared){prepared=true;rpc('prepare').catch(()=>{prepared=false;});}}
     function collapsePanel(){panel.style.display='none';launcher.setAttribute('aria-expanded','false');}
     const head=node('header'),grip=node('span','window-grip');grip.setAttribute('aria-hidden','true');head.append(grip);panel.append(head);
     const themeButton=button('◐',()=>toggleTheme(),'theme-control');themeButton.setAttribute('aria-label','切换深浅色模式');themeButton.title='切换深浅色模式';head.append(themeButton);
     const collapse=button('−',collapsePanel,'window-control');collapse.setAttribute('aria-label','收起窗口');collapse.title='收起';head.append(collapse);
     const body=node('div','body'),quote=node('blockquote');
     const empty=node('div','empty');empty.append(node('div','empty-mark','⌁'),node('div','empty-title','有什么想继续聊的？'),node('div','empty-hint','直接提问，或选中正文中的一句话。'));
-    const entries=node('div'),status=node('div','status');status.setAttribute('aria-live','polite');body.append(quote,empty,entries,status);panel.append(body);
+    const entries=node('div'),status=node('div','status');status.setAttribute('aria-live','polite');body.append(quote,empty,entries,status);
+    const bodyWrap=node('div','body-wrap'),jumpLatest=button('',()=>{body.scrollTop=body.scrollHeight;updateJumpLatest();},'chat-jump');
+    jumpLatest.setAttribute('aria-label','回到最新消息');jumpLatest.title='回到最新消息';jumpLatest.style.display='none';
+    jumpLatest.innerHTML='<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 8 5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    bodyWrap.append(body,jumpLatest);panel.append(bodyWrap);
+    function updateJumpLatest(){jumpLatest.style.display=entries.children.length>0&&body.scrollHeight-body.scrollTop-body.clientHeight>=70?'flex':'none';}
+    body.addEventListener('scroll',updateJumpLatest,{passive:true});
+    if(typeof ResizeObserver==='function'){const scrollSizeObserver=new ResizeObserver(updateJumpLatest);scrollSizeObserver.observe(body);scrollSizeObserver.observe(entries);}
+
     const footer=node('footer'),composer=node('div','composer'),input=node('textarea');input.placeholder='问点什么…';input.setAttribute('aria-label','输入问题');composer.append(input);
     const actions=node('div','actions'),keyboardHint=node('div','composer-hint','Enter 发送 · Shift + Enter 换行');composer.append(actions);footer.append(composer);panel.append(footer);
     const scopeSelect=node('select','context-scope');scopeSelect.setAttribute('aria-label','关联上下文范围');scopeSelect.title='关联上下文范围';
@@ -337,7 +372,7 @@
     const submit=button('↑',send,'primary');submit.setAttribute('aria-label','发送问题');submit.title='发送（Enter）';
     actions.append(explain,example,submit);
     function lockButtons(){for(const b of [submit,explain,example])b.disabled=!current;}
-    function setStatus(record,text){record.status=text+(record.queue?.length?`（${record.queue.length} 条排队）`:'');if(current===record){status.textContent=record.status;status.setAttribute('data-busy',record.busy?'true':'false');}}
+    function setStatus(record,text){record.status=text+(record.queue?.length?`（${record.queue.length} 条排队）`:'');if(current===record){status.textContent=record.status;status.setAttribute('data-busy',record.busy?'true':'false');updateJumpLatest();}}
     function applyReply(record,answer,job){
       if(['done','error'].includes(job.status)&&!record.queue.length){thinkingRecords.delete(record);syncPetPose();}
       const follow=current===record&&body.scrollHeight-body.scrollTop-body.clientHeight<70;
@@ -346,8 +381,9 @@
       const stages={loading:'正在等待回答页输入框…',filling:'正在填入问题…',submitting:'已尝试发送，等待网页确认…',waiting:'尚未确认网页请求，请查看回答标签页是否已发送。'};
       setStatus(record,job.status==='queued'?'已排队，可以继续阅读或提问。':job.status==='running'?(job.requestStarted?'问题已发出，等待 DeepSeek 回答…':stages[job.stage]||'正在连接回答页…'):job.status==='streaming'?'正在回答…':job.status==='error'?job.error||'回答失败。':'回答完成');
       if(follow)body.scrollTop=body.scrollHeight;
+      updateJumpLatest();
     }
-    function restore(s){current=s;entries.replaceChildren(...s.nodes);quote.textContent=s.selection.quote;quote.style.display=s.selection.general?'none':'block';empty.style.display=s.nodes.length?'none':'block';showPanel();status.textContent=s.status;status.setAttribute('data-busy',s.busy?'true':'false');lockButtons();}
+    function restore(s){current=s;entries.replaceChildren(...s.nodes);quote.textContent=s.selection.quote;quote.style.display=s.selection.general?'none':'block';empty.style.display=s.nodes.length?'none':'block';showPanel();status.textContent=s.status;status.setAttribute('data-busy',s.busy?'true':'false');lockButtons();updateJumpLatest();}
     function openSelection(){
       if(!pending)return;
       const previous=saved.find(s=>s.selection.quote===pending.quote&&s.selection.context===pending.context&&s.selection.source===pending.source);
@@ -376,7 +412,7 @@
       if(!current || !input.value.trim())return;
       const record=current,question=input.value.trim();input.value='';
       empty.style.display='none';
-      const box=node('div','entry'),q=node('div','q',question),answer=node('div','answer',record.busy?'已排队，等待上一条回答…':'等待网页回答…');box.append(q,answer);entries.append(box);record.entry=answer;record.nodes.push(box);
+      const box=node('div','entry'),q=node('div','q',question),answer=node('div','answer',record.busy?'已排队，等待上一条回答…':'等待网页回答…');box.append(q,answer);entries.append(box);record.entry=answer;record.nodes.push(box);updateJumpLatest();
       record.queue.push({question,answer,scope:contextScope});
       if(record.processing)setStatus(record,'已收下新问题，上一条完成后自动发送。');
       void drain(record);
