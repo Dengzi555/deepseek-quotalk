@@ -2,6 +2,7 @@
   if (globalThis.__dsMargin) return;
   globalThis.__dsMargin = true;
   const C = globalThis.MarginCore;
+  const Answer = globalThis.MarginAnswer;
   const demo = !!globalThis.__MARGIN_DEMO__;
   const sleep = ms => new Promise(r => setTimeout(r, ms));
   async function rpc(type, payload = {}) {
@@ -65,11 +66,12 @@
       let requestReported=false;
       function reportRequest(){if(!requestReported){requestReported=true;rpc('request-started',{id:job.id,revision:job.revision}).catch(()=>{requestReported=false;});}}
       let last=['running','streaming'].includes(job.status)?job.text||'':'',lastChange=Date.now(),seen=!!last,observedGenerating=false,networkText='';
+      let lastFormat=job.format;
       function onStream(event){
         try{const data=JSON.parse(event.detail);if(!Number.isSafeInteger(data.id))return;
           if(data.phase==='request'||data.phase==='start'){streams.add(data.id);if(data.phase==='start')liveStreams.add(data.id);networkEnded=false;reportRequest();}
           else if(data.phase==='text'&&streams.has(data.id)&&typeof data.text==='string'&&data.text.length<=100000&&data.text.trim()){
-            networkText=data.text;publishText(networkText);
+            networkText=data.text;publishText(networkText,'markdown');
           }
           else if(data.phase==='error'&&streams.has(data.id)){streams.delete(data.id);liveStreams.delete(data.id);publishError=new Error('网页回答连接中断，请检查回答标签页后重新提问。');}
           else if(streams.has(data.id)){streams.delete(data.id);liveStreams.delete(data.id);if(data.phase==='end'&&!streams.size)networkEnded=true;}
@@ -78,12 +80,12 @@
       }
       document.addEventListener('ds-margin-stream',onStream);
       const update = (status,text='',error='',extra={})=>rpc('update',{id:job.id,revision:job.revision,status,text,error,...extra});
-      function publishText(text){
+      function publishText(text,format){
         seen=true;
-        if(text!==last){last=text;lastChange=Date.now();publishing=publishing.then(()=>update('streaming',text)).catch(e=>{publishError=e;});}
+        if(text!==last||format!==lastFormat){last=text;lastFormat=format;lastChange=Date.now();publishing=publishing.then(()=>update('streaming',text,'',{format})).catch(e=>{publishError=e;});}
       }
       try {
-        await update('running',last,'',{stage:'loading'});
+        await update('running',last,'',{stage:'loading',format:lastFormat});
         let input = C.input();
         const readyDeadline=Date.now()+15000;
         while(!input&&Date.now()<readyDeadline){await sleep(150);input=C.input();}
@@ -117,10 +119,11 @@
           lastSampleAt=Date.now();
           const nodes=C.answers(),lastNode=nodes.at(-1);
           const fresh=nodes.length>count||(lastNode?.innerText&&lastNode.innerText!==old);
-          const text=(fresh?lastNode?.innerText:'')||'';
+          if(!fresh||!lastNode)return;
+          const text=Answer.extract(lastNode);
           if(!text.trim())return;
           reportInitialized();
-          publishText(text);
+          publishText(text,'markdown');
         }
         if(typeof MutationObserver==='function'){
           observer=new MutationObserver((mutations=[])=>{
@@ -151,11 +154,11 @@
           if(seen) {
             const quiet=Date.now()-lastChange;
             const domFinished=!networkText&&!liveStreams.size&&state!=='running'&&(state==='idle'||observedGenerating||quiet>=100);
-            if((networkEnded&&(networkText||quiet>=120))||domFinished) { watching=false;await publishing;if(publishError)throw publishError;await update('done',last);return; }
+            if((networkEnded&&(networkText||quiet>=120))||domFinished) { watching=false;await publishing;if(publishError)throw publishError;await update('done',last,'',{format:lastFormat});return; }
           }
         }
         watching=false;await publishing;if(publishError)throw publishError;
-        if(seen) { await update('done',last); }
+        if(seen) { await update('done',last,'',{format:lastFormat}); }
         else throw new Error('5 分钟内未识别到回答，请检查回答标签页的登录、验证和发送状态。');
       } catch(e) { watching=false;await publishing;await update('error','',e.message).catch(()=>{}); }
       finally {watching=false;document.removeEventListener('ds-margin-stream',onStream);observer?.disconnect();if(streamTimer!==null)clearTimeout(streamTimer);busy=false;}
@@ -373,10 +376,19 @@
     actions.append(explain,example,submit);
     function lockButtons(){for(const b of [submit,explain,example])b.disabled=!current;}
     function setStatus(record,text){record.status=text+(record.queue?.length?`（${record.queue.length} 条排队）`:'');if(current===record){status.textContent=record.status;status.setAttribute('data-busy',record.busy?'true':'false');updateJumpLatest();}}
+    const renderedReplies=new WeakMap();
     function applyReply(record,answer,job){
       if(['done','error'].includes(job.status)&&!record.queue.length){thinkingRecords.delete(record);syncPetPose();}
       const follow=current===record&&body.scrollHeight-body.scrollTop-body.clientHeight<70;
-      const text=job.text||'等待网页回答…';if(answer.textContent!==text)answer.textContent=text;
+      const text=job.text||'等待网页回答…';
+      const streaming=job.status==='streaming';
+      const markdown=!!job.text&&job.format==='markdown';
+      const previous=renderedReplies.get(answer);
+      if(!previous||previous.text!==text||previous.markdown!==markdown||(markdown&&previous.streaming!==streaming)){
+        if(markdown)Answer.render(answer,text,streaming);
+        else answer.textContent=text;
+        renderedReplies.set(answer,{text,markdown,streaming});
+      }
       answer.setAttribute('data-streaming',job.status==='streaming'?'true':'false');
       const stages={loading:'正在等待回答页输入框…',filling:'正在填入问题…',submitting:'已尝试发送，等待网页确认…',waiting:'尚未确认网页请求，请查看回答标签页是否已发送。'};
       setStatus(record,job.status==='queued'?'已排队，可以继续阅读或提问。':job.status==='running'?(job.requestStarted?'问题已发出，等待 DeepSeek 回答…':stages[job.stage]||'正在连接回答页…'):job.status==='streaming'?'正在回答…':job.status==='error'?job.error||'回答失败。':'回答完成');
@@ -442,7 +454,7 @@
           if(job.status==='done'){record.history.push({question,answer:job.text});setStatus(record,'回答完成');return;}
         }
         throw new Error('等待超时，请检查回答标签页是否正常。');
-      }catch(e){answer.textContent=answer.textContent==='等待网页回答…'?'尚未收到回答。':answer.textContent;setStatus(record,e.message);}
+      }catch(e){if(answer.textContent==='等待网页回答…')answer.textContent='尚未收到回答。';setStatus(record,e.message);}
       finally{answer.setAttribute('data-streaming','false');if(id&&liveReplies.get(id)?.answer===answer)liveReplies.delete(id);}
     }
     let drag;

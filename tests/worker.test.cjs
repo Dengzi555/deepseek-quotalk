@@ -7,6 +7,10 @@ function harness({observe=false,deferInput=false,deferAnswer=false,ignoreEnter=f
   const timers=[],intervals=[],answers=[],updates=[],jobs=[],observers=[],initialized=[],requests=[];let sent=0,clock=0,ready=false,running=false,inputReady=!deferInput;
   class Element{
     constructor(tag){this.tagName=tag.toUpperCase();this.children=[];this.style={};this.listeners={};this.textContent='';this.innerText='';this.isConnected=true;}
+    get nodeType(){return 1;}
+    get nodeName(){return this.tagName;}
+    get childNodes(){return [{nodeType:3,nodeValue:this.innerText},...this.children];}
+    matches(){return false;}
     append(...xs){this.children.push(...xs);for(const x of xs)x.parentElement=this;}
     attachShadow(){return new Element('shadow');}
     addEventListener(t,f){(this.listeners[t] ||= []).push(f);}
@@ -51,14 +55,35 @@ function harness({observe=false,deferInput=false,deferAnswer=false,ignoreEnter=f
   }}}};
   if(observe)ctx.MutationObserver=class{constructor(callback){this.callback=callback;observers.push(this);}observe(){this.active=true;}disconnect(){this.active=false;}};
   vm.runInNewContext(fs.readFileSync('extension/core.js','utf8'),ctx);
+  vm.runInNewContext(fs.readFileSync('extension/answer.js','utf8'),ctx);
   vm.runInNewContext(fs.readFileSync('extension/content.js','utf8'),ctx);
   async function step({tickDelay=0,onlyMs}={}){
     await flush();const pending=timers.splice(0);
     for(const t of pending){if(t.cancelled)continue;if(onlyMs!==undefined&&t.ms!==onlyMs){timers.push(t);continue;}clock+=Math.max(t.ms,tickDelay);t.fn();}
     await flush();
   }
-  return {jobs,updates,document,observers,initialized,requests,stream(phase,id=1,extra={}){document.dispatchEvent({type:'ds-margin-stream',detail:JSON.stringify({id,phase,...extra})});},revealInput(){inputReady=true;},get clock(){return clock;},get sent(){return sent;},get pendingTimers(){return timers.filter(t=>!t.cancelled).length;},begin:async()=>{await flush();return intervals[0]();},step,signal(state){running=state==='running';ready=state==='idle';for(const o of observers)if(o.active)o.callback([{type:'attributes'}]);},mutate(text){answers.at(-1).innerText=text;for(const o of observers)if(o.active)o.callback();},async run({tickDelay=0,steps=110}={}){await flush();const promise=intervals[0]();for(let i=0;i<steps;i++)await step({tickDelay});await promise;}};
+  return {jobs,updates,answers,document,observers,initialized,requests,stream(phase,id=1,extra={}){document.dispatchEvent({type:'ds-margin-stream',detail:JSON.stringify({id,phase,...extra})});},revealInput(){inputReady=true;},get clock(){return clock;},get sent(){return sent;},get pendingTimers(){return timers.filter(t=>!t.cancelled).length;},begin:async()=>{await flush();return intervals[0]();},step,signal(state){running=state==='running';ready=state==='idle';for(const o of observers)if(o.active)o.callback([{type:'attributes'}]);},mutate(text){answers.at(-1).innerText=text;for(const o of observers)if(o.active)o.callback();},async run({tickDelay=0,steps=110}={}){await flush();const promise=intervals[0]();for(let i=0;i<steps;i++)await step({tickDelay});await promise;}};
 }
+test('DOM fallback captures code with indentation and leaves site controls out of the reply',async()=>{
+  const h=harness({deferAnswer:true});
+  h.jobs.push({id:'code',revision:1,status:'queued',prompt:'解释这段代码'});
+  const finished=h.begin();await h.step();await h.step();
+  const make=h.document.createElement;
+  const reply=make('article'), wrapper=make('div'), pre=make('pre'), code=make('code');
+  const toolbar=make('div');
+  toolbar.innerText='python\n复制\n下载';
+  const source='for x in values:\n    print(x)';
+  code.innerText=source;
+  code.getAttribute=key=>key==='class'?'language-python':null;
+  pre.querySelector=selector=>selector==='code'?code:null;
+  wrapper.matches=selector=>selector.includes('.md-code-block');
+  wrapper.querySelector=selector=>selector==='pre'?pre:null;
+  wrapper.append(toolbar,pre);reply.append(wrapper);h.answers.push(reply);
+  h.signal('idle');await h.step();await finished;
+  assert.equal(h.jobs[0].status,'done');
+  assert.equal(h.jobs[0].text,'~~~python\n'+source+'\n~~~');
+  assert.equal(h.updates.at(-1).format,'markdown');
+});
 test('worker sends with Enter when send button is unlabeled, then processes another quote with revision 1',async()=>{
   const h=harness();h.jobs.push({id:'word-a',revision:1,status:'queued',prompt:'主动回忆'});await h.run();
   assert.equal(h.sent,1);assert.equal(h.jobs[0].status,'done');assert.equal(h.jobs[0].text,'回答1');
@@ -133,8 +158,10 @@ test('first reply streams and completes while the background page has not render
   const finished=h.begin();await h.step();await h.step();assert.equal(h.sent,1);
   h.stream('start');h.stream('text',1,{text:'后台尚未渲染，第一段文字已收到'});await flush();
   assert.equal(h.jobs[0].text,'后台尚未渲染，第一段文字已收到');
+  assert.equal(h.updates.at(-1).format,'markdown');
   h.stream('text',1,{text:'后台尚未渲染，完整回答'});h.stream('end');await h.step();await finished;
   assert.equal(h.jobs[0].status,'done');assert.equal(h.jobs[0].text,'后台尚未渲染，完整回答');
+  assert.equal(h.updates.at(-1).format,'markdown');
 });
 
 test('an empty composer does not prove first reply rendering is initialized; stale DOM cannot overwrite streamed text',async()=>{

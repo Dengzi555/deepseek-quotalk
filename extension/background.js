@@ -68,7 +68,7 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
       const channel = await channelForOwner(sender.tab.id);
       if(msg.id)job=await read(msg.id);
       if (active(job)) throw new Error('这条旁注还在回答，可划选其他文字提问。');
-      job = {...job, id: job?.id || crypto.randomUUID(), owner: sender.tab.id, worker: channel.worker, prompt: msg.prompt, question: msg.question, status: 'queued', stage:'loading', text: '', error: '', baseline: null, requestStarted:false, revision: (job?.revision || 0) + 1, updated: Date.now()};
+      job = {...job, id: job?.id || crypto.randomUUID(), owner: sender.tab.id, worker: channel.worker, prompt: msg.prompt, question: msg.question, status: 'queued', stage:'loading', text: '', format:'plain', error: '', baseline: null, requestStarted:false, revision: (job?.revision || 0) + 1, updated: Date.now()};
       await put(job);
       channel.queue.push(job.id); await saveChannel(channel);
       if(!channel.initialized&&!channel.startupAttempted){
@@ -89,7 +89,7 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
     if (msg.type === 'state' && job.owner === sender.tab.id) return job;
     if(msg.type==='request-started'&&job.worker===sender.tab.id&&channel?.current===job.id&&msg.revision===job.revision&&active(job)){
       job.requestStarted=true;job.updated=Date.now();await markInitialized(channel);await put(job);
-      chrome.tabs.sendMessage(job.owner,{type:'job-update',job:{id:job.id,revision:job.revision,status:job.status,stage:job.stage,requestStarted:true,text:job.text,error:job.error,updated:job.updated}}).catch(()=>{});return {};
+      chrome.tabs.sendMessage(job.owner,{type:'job-update',job:{id:job.id,revision:job.revision,status:job.status,stage:job.stage,requestStarted:true,text:job.text,format:job.format,error:job.error,updated:job.updated}}).catch(()=>{});return {};
     }
     if(msg.type==='initialized'&&job.worker===sender.tab.id&&channel?.current===job.id&&msg.revision===job.revision){
       await markInitialized(channel);return {};
@@ -101,12 +101,13 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
       if(['loading','filling','submitting','waiting'].includes(msg.stage))job.stage=msg.stage;
     if(msg.baseline && Number.isInteger(msg.baseline.count) && msg.baseline.count>=0)job.baseline={count:msg.baseline.count,old:String(msg.baseline.old||'').slice(0,100000)};
       job.text = String(msg.text || '').slice(0, 100000);
+      job.format = msg.format === 'markdown' ? 'markdown' : 'plain';
       job.error = String(msg.error || '').slice(0, 1000);
       job.updated = Date.now();
       await put(job);
       if((msg.status==='streaming'||msg.status==='done')&&job.text)await markInitialized(channel);
       if(msg.status==='error')await returnToReader(channel);
-      chrome.tabs.sendMessage(job.owner, {type:'job-update',job:{id:job.id,revision:job.revision,status:job.status,stage:job.stage,requestStarted:job.requestStarted,text:job.text,error:job.error,updated:job.updated}}).catch(()=>{});
+      chrome.tabs.sendMessage(job.owner, {type:'job-update',job:{id:job.id,revision:job.revision,status:job.status,stage:job.stage,requestStarted:job.requestStarted,text:job.text,format:job.format,error:job.error,updated:job.updated}}).catch(()=>{});
       return {};
     }
     throw new Error('无权操作此会话');
